@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>App</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+</head>
+
+<body class="container">
+    <style>
+        body {
+            background-color: #FEE8F0;
+            
+        }
+
+        .item {
+            float: left;
+            margin: 10px;
+            padding: 5px;
+            box-shadow: 3px 3px 5px #cecece;
+        }
+    </style>
+    <div class="col-sm-12">
+        <h1 class="text-center">Maratona full cycle 3.0</h1>
+    </div>
+
+    <div class="row">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
+            onclick="getModal()">
+            Adicionar nova aula
+        </button>
+    </div>
+
+    <div class="row" >
+        {{#each lessons}}
+        <div class="card item col-sm-3">
+            <img src="{{thumb}}" alt="{{ self.name }}" style="width: 100%;">
+            <div class="card-body">
+                <p class="card-text">{{ date }}</p>
+                <h5 class="card-title">{{ name }}</h5>
+                <p class="card-text">{{ description }}</p>
+
+            </div>
+            <div style="padding: 2px;">
+                <a href="{{ link }}" target="_blank" class="btn btn-sm btn-primary">Visitar</a>
+                <button class="btn btn-sm btn-primary" data-target="#exampleModal" data-toggle="modal"
+                    onclick="getModal({{id}})">Editar</button>
+                <button class="btn btn-sm btn-primary" onclick="deleteLesson({{id}})">Apagar</button>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Aula</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="modal-content">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" id="save-lesson-btn">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+    <script>
+
+        function getModal(id) {
+            const modalElement = '#modal-content'
+
+            $(modalElement).html('Carregando...')
+
+            $.ajax({
+                url: 'maratona/' + (id || 0),
+                method: 'GET',
+                success: function (html) {
+                    $(modalElement).html(html)
+                },
+                error: function () {
+                    alert('Falha ao carregar modal')
+                }
+            })
+        }
+
+        function deleteLesson(id) {
+            if (confirm('Deseja excluir essa aula?')) {
+                $.ajax({
+                    url: '/' + id,
+                    method: 'DELETE',
+                    success: function () {
+                        window.location.reload()
+                    },
+                    error: function () {
+                        alert('Falha ao deletar aula')
+                    }
+                })
+            }
+        }
+
+
+    </script>
+</body>
+
+</html>

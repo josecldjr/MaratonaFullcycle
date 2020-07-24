@@ -1,0 +1,16 @@
+version: '3'
+
+services: 
+  # dev:
+  #   container_name: go
+  #   tty: true
+  #   build: ./
+  #   volumes: 
+  #     - ./:/go/src
+  prod:
+    container_name: go
+    image: josecjr/fullcycled1
+    tty: true
+    build: 
+        context: .
+        dockerfile: Dockerfile.Prod

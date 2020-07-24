@@ -1,0 +1,16 @@
+# BUILDER IMAGE
+FROM golang:1.13.12-alpine3.12 as builder
+
+WORKDIR /go/src
+
+# compile go scripts
+COPY . /go/src
+RUN go build main.go
+
+# FINAL IMAGE
+FROM scratch
+
+# WORKDIR /go/src
+COPY --from=builder /go/src/main .
+
+ENTRYPOINT [ "./main" ]

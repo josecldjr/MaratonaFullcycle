@@ -1,0 +1,58 @@
+<div>
+    <form id="modal-form">
+        <input name="id" type="hidden" value="{{lesson.id}}" /> 
+
+        <div>
+            <label for="name">Nome</label>
+            <input class="form-control" name="name" type="text" value="{{lesson.name}}" />
+        </div>
+        <div>
+            <label for="description">Descrição</label>
+            <input class="form-control" name="description" type="text" value="{{lesson.description}}" />
+        </div>
+        <div>
+            <label for="date">Data</label>
+            <input class="form-control" name="date" type="date" value="{{lesson.date}}" />
+        </div>
+        <div>
+            <label for="link">Link</label>
+            <input class="form-control" name="link" type="url" value="{{lesson.link}}" />
+        </div>
+        <div>
+            <label for="thumb">Url para thumb</label>
+            <input class="form-control" name="thumb" type="url" value="{{lesson.thumb}}" />
+        </div> 
+    </form>
+</div>
+
+<script>
+    
+    $('#save-lesson-btn').on('click', function() {
+        saveLesson()
+    })
+
+    function saveLesson() {
+        const formValues = $('#modal-form').serializeArray()
+
+        const data = {}
+        formValues.forEach(function(input) {
+            data[input.name] = input.value
+        })
+
+
+        $.ajax({
+            url: '/',
+            method: 'POST',
+            accepts: 'application/json',
+            data: data,
+            success: function () {
+                window.location.reload()
+            },
+            error: function (xhr, error, status) {
+                alert(xhr)
+            }
+        })
+    }
+
+
+</script>
